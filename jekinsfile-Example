@@ -1,0 +1,16 @@
+node 
+{
+	stage('Scm'){
+		git 'https://github.com/naveenaws66/projrct.git'
+	}
+	stage('build'){
+		sh 'mvn package'
+	}
+	stage('results'){
+		junit '**/target/surefire-reports/TEST-*.xml'	
+		archiveArtifacts 'gameoflife-web\\target\\gameoflife.war'
+	}
+        stage ('ansible'){
+                sh 'ansible-playbook -i host ansible.yml'
+        }    
+}
